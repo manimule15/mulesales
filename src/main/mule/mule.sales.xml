@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="e36f743d-698f-4bb3-bbfa-a418b64368bb" >
+		<salesforce:basic-connection username="mani.mule@outlook.com" password="Preet@03" securityToken="RWA0xiGuhmu8OStbBFl4zH2x" />
+	</salesforce:sfdc-config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a186c436-5485-4431-8eb9-40a20156bb54" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule.salesFlow" doc:id="1efd9cd4-f193-4f88-b730-b0d437ef7adf" >
+		<http:listener doc:name="Listener" doc:id="53852284-34e8-4327-b802-99ad0c9f991b" config-ref="HTTP_Listener_config" path="/sales"/>
+		<ee:transform doc:name="Transform Message" doc:id="1f862a09-fde7-4240-b828-49b22d896e4b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="bf0696de-fede-41fb-84d4-9e7e2a783389" config-ref="Salesforce_Config" type="Account"/>
+		<ee:transform doc:name="Transform Message" doc:id="40d2a6ac-ad21-4deb-b5ef-da57e3211b11" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
