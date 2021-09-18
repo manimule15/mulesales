@@ -10,10 +10,11 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 		<salesforce:basic-connection username="mani.mule@outlook.com" password="Preet@03" securityToken="RWA0xiGuhmu8OStbBFl4zH2x" />
 	</salesforce:sfdc-config>
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a186c436-5485-4431-8eb9-40a20156bb54" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
+		<http:listener-connection host="0.0.0.0" port="8080" />
 	</http:listener-config>
 	<flow name="mule.salesFlow" doc:id="1efd9cd4-f193-4f88-b730-b0d437ef7adf" >
 		<http:listener doc:name="Listener" doc:id="53852284-34e8-4327-b802-99ad0c9f991b" config-ref="HTTP_Listener_config" path="/sales"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ab0d8d5e-7738-42f7-ac37-25853a9ea754" />
 		<ee:transform doc:name="Transform Message" doc:id="1f862a09-fde7-4240-b828-49b22d896e4b" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
